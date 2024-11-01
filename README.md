@@ -2,7 +2,7 @@
 
 ---
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10211710.svg)](https://doi.org/10.5281/zenodo.10211710)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10211710.svg)](https://doi.org/10.5281/zenodo.14026723)
 
 
 [![Manual Build](https://img.shields.io/github/actions/workflow/status/TeamBenign/WolfTrack5.0/main.yml)](https://github.com/TeamBenign/WolfTrack5.0/actions)
