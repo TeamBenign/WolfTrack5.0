@@ -1,379 +1,368 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>WolfTrack - Home</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        /* Centering the canvas and making it responsive */
+        .canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            overflow: auto; /* Allow scrolling if the canvas exceeds the modal size */
+        }
 
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        #pdf-canvas {
+            max-width: 100%; /* Prevent canvas from exceeding the modal width */
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Prevent additional spacing issues */
+        }
 
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-  
-  <style>
-      /* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 2; /* Sit on top */
-
-  padding-top: 50px; /* Location of the box */
-  padding-left: 50px;
-  padding-bottom: 50px;
-  padding-right: 50px;
-  left: 400px;
-  top: 200px;
-  width: 50%; /* Full width */
-  height: 60%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #ffffff;
-  color: #000;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-  </style>
+        .highlight {
+          background-color: rgba(255, 255, 0, 0.5); /* Semi-transparent yellow */
+          position: absolute; /* Use absolute positioning */
+          pointer-events: none; /* Prevent interaction issues */
+        }
+        .modal-body {
+          position: relative; /* Allow positioning of highlights */
+      }
+    </style>
 </head>
-
 <body>
-  <nav class="navbar navbar-expand-sm navbar-dark sticky-top" 
-    <ul class="navbar-nav ">
-      <a class="navbar-brand" href="/">WolfTrack</a>
-    </ul>
+{% extends "layout/init.html" %}
 
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="container-fluid">
-    <div class="row content">
-
-      <!-- Left Sidebar -->
-      <div class="col-sm-3 sidenav sidenav-left">
-        <center>
-          <img class="rounded-circle" alt="100x100"
-            src="https://ih1.redbubble.net/image.1703296696.9941/st,small,507x507-pad,600x600,f8f8f8.jpg" height="250px"
-            width="250px" data-holder-rendered="true">
-
-          <br><br>
-
-          <div class="card" style="width: 20rem; text-align: left;">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <b>NAME: </b>
-                </div>
-                <div class="col">
-                  {{ user[1] }}
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col">
-                  <b>USERNAME: </b>
-                </div>
-                <div class="col">
-                  {{ user[2] }}
-                </div>
-              </div>
-
-
-            </div>
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+      <!-- Sidebar Section -->
+      {% if user %}
+      <div class="col-md-2 bg-light p-3">
+          <h4>User Profile</h4>
+          <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <p>{{ user[1] }}</p>
           </div>
-          
-          <br><br>
-        </center>
-        
-       
-
+          <div class="mb-3">
+              <label for="name" class="form-label">Name:</label>
+              <p>{{ user[2] }}</p>
+          </div>
+          <div class="mb-3">
+              <label for="role" class="form-label">Role:</label>
+              <p>{{ user[4] }}</p>
+          </div>
       </div>
+      {% endif %}
 
-      <!-- Content -->
-      <div class="col-sm-6 text-left main-content">
-        <center>
-          {% block content %}{% endblock %}
-          <div class="button-container">
-            
-            <div class = "image-container">
-                <a  href="http://127.0.0.1:5000/admin/render_resume" target="_blank" class="button4"  style="background-color:#b9dfec">
-                    <!-- <img alt="Qries" src="{{ url_for('static', filename='images/resume-image.png') }}" width="270" height="300"> -->
-                    <iframe title="resume1" src="{{url_for('static', filename ='/files/resume.pdf')}}" width="270" height="300" frameborder="0"></iframe>
-                </a>
-                <p class="name" style="background-color:#b9dfec"> Harper Hillsborough  </p>
-                <div class="review-container">
-                    <button onclick="" id="reviewButton1" href="http://127.0.0.1:5000/admin/render_resume" target="_blank" class="button5" style="background-color:#b9dfec" value="NO">
-                      <img id="reviewImage1" src="{{ url_for('static', filename='images/notreviewed.png') }}" width="40" height="35">
-                    </button>
-                    <div class="divider-icon"> </div>
-                    <button  id="commentButton1" class="button5" style="background-color:#b9dfec" value="NO">
-                      <img id="commentImage1" src="{{ url_for('static', filename='images/uncomment.png') }}" width="40" height="35">
-                    </button> 
-                    <div class="divider-icon"> </div>
-                    <button  id="likeButton1" class="button5" style="background-color:#b9dfec" value="NO">
-                      <img id="likeImage1" src="{{ url_for('static', filename='images/unlike.png') }}" width="40" height="35">
-                    </button>  
-                    
+      <!-- Main Content Section -->
+               <!-- Main Content Section -->
+               <div class="col-md-10 p-4">
+                <h2>Resumes</h2>
+                <div class="row">
+                    {% for resume in resumes %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ resume.username }}</h5>
+                                <p class="card-text">Position: {{ resume.position }}</p>
+                                <a href="#" class="btn btn-primary btn-sm" onclick="openWithAdobe(event, '{{ resume.filepath }}')">View Resume</a>                                
+                                <!-- Edit Resume Button -->
+                                <button onclick="editResume('{{ resume.id }}')" class="btn btn-secondary btn-sm">Edit Resume</button>
+                                
+                                <!-- Like and Comment Section -->
+                                <div class="mt-3">
+                                    <button onclick="likeResume('{{ resume.id }}')" class="btn btn-outline-primary btn-sm">
+                                        👍 Like (<span id="like-count-{{ resume.id }}">{{ resume.likes }}</span>)
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="showCommentBox('{{ resume.id }}')">
+                                        💬 Comment
+                                    </button>
+                                </div>
+                                
+                                <!-- Comment Box (hidden initially) -->
+                                <div id="comment-box-{{ resume.id }}" class="mt-2" style="display: none;">
+                                    <textarea class="form-control mb-2" rows="2" placeholder="Write your comment..."></textarea>
+                                    <button class="btn btn-sm btn-success" onclick="submitComment('{{ resume.id }}')">Post Comment</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="myModal" class="modal">
-                      <!-- Modal content -->
-                      <div class="modal-content">
-                          <span class="close">&times;</span>
-                          <form action="{{url_for('send_email')}}" method="POST" class="form-container">
-                              <p>Comments</p>
-                              <textarea id="comment" name="comment" rows="10" cols="50">
-                              </textarea>
-                              <br>
-                              <button type="submit" class="button6">Send Email</button>                            
-                          </form>
-                      </div>
+                    {% endfor %}
                 </div>
             </div>
-                <div class="divider"> </div>
-                <!-- <a  href="http://127.0.0.1:5000/admin_login/render_resume" target="_blank" class="button4"  style="background-color:#b9dfec">
-                    <img alt="Qries" src="{{ url_for('static', filename='images/resume-image.png') }}" width="270" height="300">
-                </a> -->
-            <div class = "image-container">
-                <a  href="http://127.0.0.1:5000/admin/render_resume" target="_blank" class="button4"  style="background-color:#b9dfec">
-                    <!-- <img alt="Qries" src="{{ url_for('static', filename='images/resume-image.png') }}" width="270" height="300"> -->
-                    <iframe title="resume1" src="{{url_for('static', filename ='/files/resume2.pdf')}}" width="270" height="300" frameborder="0"></iframe>
-                </a>
-                <p class="name" style="background-color:#b9dfec"> Elliot Anderson </p>
-                <div class="review-container">
-                  <button id ="reviewButton2" href="http://127.0.0.1:5000/admin/render_resume" target="_blank" class="button5" style="background-color:#b9dfec" value="NO">
-                    <img id="reviewImage2" src="{{ url_for('static', filename='images/notreviewed.png') }}" width="40" height="35">
-                  </button>
-                  <div class="divider-icon"> </div>
-                  <button  id="commentButton2" class="button5" style="background-color:#b9dfec" value = "NO">
-                    <img id="commentImage2" src="{{ url_for('static', filename='images/uncomment.png') }}" width="40" height="35">
-                  </button>   
-                  <div class="divider-icon"> </div>
-                  <button  id="likeButton2" class="button5" style="background-color:#b9dfec" value="NO">
-                    <img id="likeImage2" src="{{ url_for('static', filename='images/unlike.png') }}" width="40" height="35">
-                  </button>   
-
-                  </div>
-              </div>
-
-              <div class = "image-container">
-                <a  href="http://127.0.0.1:5000/admin/render_resume" target="_blank" class="button4"  style="background-color:#b9dfec">
-                    <!-- <img alt="Qries" src="{{ url_for('static', filename='images/resume-image.png') }}" width="270" height="300"> -->
-                    <iframe title="resume1" src="{{url_for('static', filename ='/files/resume3.pdf')}}" width="270" height="300" frameborder="0"></iframe>
-                </a>
-                <p class="name" style="background-color:#b9dfec"> David Baker </p>
-                <div class="review-container">
-                  <button id ="reviewButton3" href="http://127.0.0.1:5000/admin/render_resume" target="_blank" class="button5" style="background-color:#b9dfec" value="NO">
-                    <img id="reviewImage3" src="{{ url_for('static', filename='images/notreviewed.png') }}" width="40" height="35">
-                  </button>
-                  <div class="divider-icon"> </div>
-                  <button  id="commentButton3" class="button5" style="background-color:#b9dfec" value="NO">
-                    <img id="commentImage3" src="{{ url_for('static', filename='images/uncomment.png') }}" width="40" height="35">
-                  </button>   
-                  <div class="divider-icon"> </div>
-                  <button  id="likeButton3" class="button5" style="background-color:#b9dfec" value="NO">
-                    <img id="likeImage3" src="{{ url_for('static', filename='images/unlike.png') }}" width="40" height="35">
-                  </button>   
-
-                  </div>
-              </div>
-            </div>            
-          </div>
-
-          
-
-        </center>
-      </div>
-
-      <!-- The Modal -->
-      
-
-      
-
-
         </div>
-      </div>
     </div>
 
+    <!-- PDF Modal -->
+<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="pdfModalLabel">Resume PDF</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <canvas id="pdf-canvas"></canvas>
+              <div id="highlight-controls" style="display: none;">
+                  <button id="highlight-btn" class="btn btn-warning" onclick="highlightText()">Highlight Text</button>
+                  <button id="save-btn" class="btn btn-success" onclick="saveHighlights()">Save Highlights</button>
+              </div>
+              <!-- Zoom Controls -->
+              <div class="mt-2">
+                <button id="zoom-in" class="btn btn-outline-primary" onclick="zoomIn()">Zoom In</button>
+                <button id="zoom-out" class="btn btn-outline-primary" onclick="zoomOut()">Zoom Out</button>
+                <button id="reset-zoom" class="btn btn-outline-primary" onclick="resetZoom()">Reset Zoom</button>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+    <!-- Scripts for Likes, Comments, and Resumes -->
     <script>
-       var modal = document.getElementById("myModal");
-       var likeImage = [];
-       var commentImage = [];
-       var reviewImage = [];
-       var likeButton = [];
-       var commentButton = [];
-       var reviewButton = [];
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+        let pdfDoc = null;
+        let pageNum = 1;
+        let canvas = document.getElementById('pdf-canvas');
+        let ctx = canvas.getContext('2d');
+        let highlights = []; // Store highlights here
+        let scale = 1.0;
+        const zoomFactor = 0.1;
+        function likeResume(resumeId) {
+            fetch(`/like_resume/${resumeId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`like-count-${resumeId}`).innerText = data.likes;
+                }
+            });
+        }
 
-       var likeButton1 = document.getElementById("likeButton1");
-       var likeButton2 = document.getElementById("likeButton2");
-       var likeButton3 = document.getElementById("likeButton3");
-       var likeImage1 = document.getElementById("likeImage1");
-       var likeImage2 = document.getElementById("likeImage2");
-       var likeImage3 = document.getElementById("likeImage3");
+        function showCommentBox(resumeId) {
+            const commentBox = document.getElementById(`comment-box-${resumeId}`);
+            commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+        }
 
-       var commentButton1 = document.getElementById("commentButton1");
-       var commentButton2 = document.getElementById("commentButton2");
-       var commentButton3 = document.getElementById("commentButton3");
-       var commentImage1 = document.getElementById("commentImage1");
-       var commentImage2 = document.getElementById("commentImage2");
-       var commentImage3 = document.getElementById("commentImage3");
+        function submitComment(resumeId) {
+            const commentText = document.querySelector(`#comment-box-${resumeId} textarea`).value;
+            fetch(`/comment_resume/${resumeId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ comment: commentText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Comment posted successfully!');
+                    document.querySelector(`#comment-box-${resumeId} textarea`).value = '';
+                    showCommentBox(resumeId); // Hide the comment box after posting
+                }
+            });
+        }
 
-
-       var reviewButton1 = document.getElementById("reviewButton1");
-       var reviewButton2 = document.getElementById("reviewButton2");
-       var reviewButton3 = document.getElementById("reviewButton3");
-       var reviewImage1 = document.getElementById("reviewImage1");
-       var reviewImage2 = document.getElementById("reviewImage2");
-       var reviewImage3 = document.getElementById("reviewImage3");
-
-      //  for(var i = 1; i <= 3 ; i++)
-      //     likeImage[i-1] = document.getElementById("likeImage"+i);
-      //  for(var i = 1; i <= 3 ; i++)
-      //     commentImage[i-1] = document.getElementById("commentImage"+i);
-      //  for(var i = 1; i <= 3 ; i++)
-      //     reviewImage[i-1] = document.getElementById("reviewImage"+i);
-
-      //  for(var i = 1; i <= 3 ; i++)
-      //     likeButton[i-1] = document.getElementById("likeButton"+i);
-      //  for(var i = 1; i <= 3 ; i++)
-      //     commentButton[i-1] = document.getElementById("commentButton"+i);
-      //  for(var i = 1; i <= 3 ; i++)
-      //     reviewButton[i-1] = document.getElementById("reviewButton"+i);
-
-
-      // likeButton[0].onclick = onButtonClick('like.png','unlike.png')
-
-      // Get the button that opens the modal
-      // var btn = document.getElementById("commentButton1");
-      // var btn1 = document.getElementById("commentButton2");
-
-      // var like = document.getElementById("likeBtn");
-      // var review = document.getElementById("likeBtn");
-
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close")[0];
-
-      // When the user clicks the button, open the modal 
-      // commentButton1.onclick = function() {
-      //   modal.style.display = "block";
-      // }
-
-      // commentButton2.onclick = function() {
-      //   modal.style.display = "block";
-      // }
-
-      likeButton1.onclick = function() {
-        onButtonClick('like.png','unlike.png',likeButton1,likeImage1);
+        function viewResume(resumepath) {
+          fetch(`/resume_pdf/${resumepath}`)
+          .then(response => response.blob())
+          .then(blob => {
+              const url = URL.createObjectURL(blob);
+              console.log("Resume Path:", url);
+              openWithAdobe(url);
+              
+          });
+        }
+        function openWithAdobe(event, resumepath) {
+          // Prevent the default action to ensure it doesn't navigate away
+          fetch(`/resume_pdf/${resumepath}`)
+          .then(response => response.blob())
+          .then(blob => {
+              const url = URL.createObjectURL(blob);
+              event.preventDefault();
+          
+              // Create a popup window
+              var popup = window.open('', 'AdobePDF', 'width=800,height=600');
+    
+              // Check if the popup was blocked
+              if (!popup) {
+                  alert('Popup blocked! Please allow popups for this site to view the PDF.');
+                  return;
+              }
+    
+              // Write the HTML for the popup
+              popup.document.write('<html><head><title>Adobe PDF</title></head><body>');
+              popup.document.write('<h2>Please open the PDF in Adobe Acrobat Reader.</h2>');
+              popup.document.write('<p>If it doesn\'t open automatically, click the link below:</p>');
+              popup.document.write('<a href="' + url + '" target="_blank">Open PDF</a>');
+              popup.document.write('</body></html>');
+              popup.document.close();
+    
+              // Attempt to open PDF with Adobe Reader (this might not work in all browsers)
+              setTimeout(function() {
+                  popup.location.href = url; // this will try to load the PDF in the popup
+              }, 500);
+              
+          });
+         
       }
-      likeButton2.onclick = function() {
-        onButtonClick('like.png','unlike.png',likeButton2,likeImage2);
-      }
-      likeButton3.onclick = function() {
-        onButtonClick('like.png','unlike.png',likeButton3,likeImage3);
-      }
-
-      commentButton1.onclick = function() {
-        modal.style.display = "block";
-        onCommentClick('comment-done.png','uncomment.png',commentButton1,commentImage1);
-      }
-      commentButton2.onclick = function() {
-        modal.style.display = "block";
-        onCommentClick('comment-done.png','uncomment.png',commentButton2,commentImage2);
-      } 
-      commentButton3.onclick = function() {
-        modal.style.display = "block";
-        onCommentClick('comment-done.png','uncomment.png',commentButton3,commentImage3);
-      }
-
-      reviewButton1.onclick = function() {
-        onReviewClick('reviews.png','notreviewed.png',reviewButton1,reviewImage1,'http://127.0.0.1:5000/admin/render_resume');
-      }
-      reviewButton2.onclick = function() {
-        onReviewClick('reviews.png','notreviewed.png',reviewButton2,reviewImage2,'http://127.0.0.1:5000/admin/render_resume');
-      } 
-      reviewButton3.onclick = function() {
-        onReviewClick('reviews.png','notreviewed.png',reviewButton3,reviewImage3,'http://127.0.0.1:5000/admin/render_resume');
+        function loadPdf(url) {
+          pdfjsLib.getDocument(url).promise.then(pdf => {
+              pdfDoc = pdf;
+              renderPage(pageNum);
+          });
       }
       
+      function highlightText() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                const canvasRect = canvas.getBoundingClientRect();
+
+                // Create a highlight object with text and position
+                const highlight = {
+                    text: selection.toString(),
+                    rect: {
+                        x: rect.left - canvasRect.left,
+                        y: rect.top - canvasRect.top,
+                        width: rect.width,
+                        height: rect.height
+                    }
+                };
+
+                highlights.push(highlight); // Store the highlight
+                selection.removeAllRanges(); // Clear selection
+
+                drawHighlights(); // Redraw highlights
+            }
+        }
+
+        // Draw highlights on the canvas
+        function drawHighlights() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            renderPage(pageNum); // Re-render the page to clear it and redraw
+
+            highlights.forEach(highlight => {
+                ctx.fillStyle = 'rgba(255, 255, 0, 0.5)'; // Highlight color
+                ctx.fillRect(highlight.rect.x, highlight.rect.y, highlight.rect.width, highlight.rect.height);
+            });
+        }
+
+        // Load the PDF when the modal is opened
+        document.getElementById('pdfModal').addEventListener('show.bs.modal', function (event) {
+            const resumePath = event.relatedTarget.getAttribute('data-resume-path');
+            loadPdf(resumePath);
+            setTimeout(() => {
+                canvas.addEventListener('mouseup', highlightText); // Add event listener after loading
+            }, 1000); // Delay to ensure the PDF is rendered
+        });
+
+        // Optional: Cleanup on modal close
+        document.getElementById('pdfModal').addEventListener('hidden.bs.modal', function () {
+            highlights = []; // Clear highlights
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            canvas.removeEventListener('mouseup', highlightText); // Remove event listener
+        });
+    
+    // Adjust the renderPage function to draw highlights
+    function renderPage(num) {
+        pdfDoc.getPage(num).then(page => {
+            const viewport = page.getViewport({ scale: scale });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+    
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+    
+            // Render the page
+            page.render(renderContext).promise.then(() => {
+                // Draw highlights after the page is rendered
+                drawHighlights();
+                document.getElementById('highlight-controls').style.display = 'block';
+            });
+        });
+    }
+    
+    function highlightText() {
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+
+          // Create a highlight object with text and position
+          const highlight = {
+              text: selection.toString(),
+              rect: {
+                  x: rect.left - canvas.getBoundingClientRect().left,
+                  y: rect.top - canvas.getBoundingClientRect().top,
+                  width: rect.width,
+                  height: rect.height
+              }
+          };
+          highlights.push(highlight);
+
+          // Clear selection
+          selection.removeAllRanges();
+
+          // Redraw the PDF page and highlights
+          renderPage(pageNum);
+      }
+  }
+
+  // Function to draw highlights on the canvas
+  function drawHighlights() {
+      highlights.forEach(highlight => {
+          ctx.fillStyle = 'rgba(255, 255, 0, 0.5)'; // Highlight color
+          ctx.fillRect(highlight.rect.x, highlight.rect.y, highlight.rect.width, highlight.rect.height);
+      });
+  }
+
+  function saveHighlights() {
+      fetch('/save_highlights', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ highlights: highlights })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              alert('Highlights saved successfully!');
+          }
+      });
+  }
+
       
-      function onButtonClick(image1,image2,button,image) {
-        if(button.value=="NO"){
-          image.src = "../static/images/"+image1;
-          button.value="YES";
-        }
-        else{
-          image.src = "../static/images/"+image2;
-          button.value="NO";
+      function zoomIn() {
+        scale += zoomFactor; 
+        renderPage(pageNum); 
+      }
+
+      function zoomOut() {
+        if (scale > zoomFactor) { 
+            scale -= zoomFactor; 
+            renderPage(pageNum); 
         }
       }
 
-      function onCommentClick(image1,image2,button,image) {
-        if(button.value=="NO"){
-          image.src = "../static/images/"+image1;
-          button.value="YES";
-        }
+      function resetZoom() {
+        scale = 1.0; // Reset to default scale
+        renderPage(pageNum); // Re-render the page with the default scale
       }
-
-      function onReviewClick(image1,image2,button,image,URL) {
-        window.open(URL, '_blank');
-        if(button.value=="NO"){
-          image.src = "../static/images/"+image1;
-          button.value="YES";
-        }
-      }
-
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = function() {
-        modal.style.display = "none";
-      }
-
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
+      
     </script>
-        
 
-</body>
 
-</html>
+      {% endblock %}
+    </body>
+    </html>

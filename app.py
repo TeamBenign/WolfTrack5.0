@@ -26,17 +26,18 @@ from flask import send_file, current_app as app
 from Controller.gemini_pipeline import get_gemini_feedback
 from Controller.data import data, upcoming_events, profile
 from Controller.send_email import *
-from dbutils import add_job, create_tables, add_client, get_all_resumes, get_resumes_by_user_name, delete_job_application_by_job_id ,find_user, get_job_applications, get_job_applications_by_status, update_job_application_by_id, get_user_by_username_role
+from dbutils import add_job, create_tables, add_client, get_resumes_by_user_name, delete_job_application_by_job_id ,find_user, get_job_applications, get_job_applications_by_status, update_job_application_by_id, get_user_by_username_role
 from login_utils import login_user
 import requests
 import urllib.parse
-
+from DAO.resume_dao import ResumeDAO, Resume
 
 app = Flask(__name__)
 # api = Api(app)
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"  # SQLite URI
 app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.config['RESUME_DIR'] = r"C:\Users\asus\Downloads\WolfTrack5.0\WolfTrack5.0\static\files"
 db = SQLAlchemy(app)
 database = "database.db"
 """
@@ -150,7 +151,7 @@ def admin():
     user_name = session['user_name']
     user = find_user(user_name,database)
     ##Add query
-    resumes = get_all_resumes(database)
+    resumes = ResumeDAO().get_all_resumes(database)
     return render_template('admin_landing.html', user=user, resumes= resumes)
 
 
@@ -190,6 +191,11 @@ def tos():
     workingdir = os.path.abspath(os.getcwd())
     filepath = workingdir + '/static/files/'
     return send_from_directory(filepath, 'resume2.pdf')
+
+@app.route('/resume_pdf/<path:resume_path>', methods=['GET'])
+def view_resume(resume_path):
+    print(send_from_directory(app.config['RESUME_DIR'], resume_path))
+    return send_from_directory(app.config['RESUME_DIR'], resume_path)
 
 @app.route("/add_job_application", methods=['POST'])
 def add_job_application():

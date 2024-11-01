@@ -1,13 +1,15 @@
 import sqlite3
 
 class Resume:
-    def __init__(self, username, filepath, position,likes):
-        self.username = username
-        self.position = position
-        self.filepath = filepath
-        self.likes = likes
-    
-    def add_resume(value_set,db):
+        def __init__(self, id, username, filepath, position,likes):
+            self.id = id
+            self.username = username
+            self.position = position
+            self.filepath = filepath
+            self.likes = likes
+            
+class ResumeDAO:
+    def add_resume(self, value_set,db):
         conn = sqlite3.connect(db)
         cursor = conn.cursor()
         print(value_set)
@@ -18,7 +20,7 @@ class Resume:
         conn.close()
     
     
-    def get_all_resumes(db):
+    def get_all_resumes(self, db):
         conn = sqlite3.connect(db)
         cursor = conn.cursor()
 
@@ -26,10 +28,10 @@ class Resume:
         rows = cursor.fetchall()  # Use fetchall() to get all rows
         conn.close()
         print('resumes ->>>', rows)
-        resumes= [Resume(row[0], row[1], row[2], row[3]) for row in rows]
+        resumes= [Resume(row[0], row[1], row[2], row[3], row[4]) for row in rows]
         return resumes
     
-    def get_resumes_by_user_name(user_name, db):
+    def get_resumes_by_user_name(self, user_name, db):
         conn = sqlite3.connect(db)
         cursor = conn.cursor()
         
