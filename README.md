@@ -5,7 +5,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10211710.svg)](https://doi.org/10.5281/zenodo.10211710)
 
 
-[![Manual Build](https://img.shields.io/github/actions/workflow/status/rutuja-39/WolfTrack5.0/main.yml)](https://github.com/rutuja-39/WolfTrack5.0/actions)
+[![Manual Build](https://img.shields.io/github/actions/workflow/status/TeamBenign/WolfTrack5.0/main.yml)](https://github.com/rutuja-39/WolfTrack5.0/actions)
 <!-- [![codecov](https://codecov.io/gh/nehajaideep/WolfTrack3.0/branch/Group10StableBranch/graph/badge.svg?token=0Q36G2YQC6)](https://codecov.io/gh/nehajaideep/WolfTrack3.0) -->
 [![codecov](https://codecov.io/gh/aniketdarp190301/WolfTrack4.0/graph/badge.svg?token=3OWJ1DERO5)](https://app.codecov.io/github/rutuja-39/WolfTrack5.0/tree/dev/graph)
 ![GitHub language count](https://img.shields.io/github/languages/count/rutuja-39/WolfTrack5.0)
