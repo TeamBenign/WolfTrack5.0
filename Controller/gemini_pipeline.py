@@ -14,8 +14,9 @@ from PyPDF2 import PdfFileReader
 import numpy as np
 import os
 import google.generativeai as genai
+from config import API_CONFIG
         
-API_KEY = "AIzaSyBvVbnHMiCIN143GgN6P1u4w7iBbGucb0E" #add gemini API key
+API_KEY = API_CONFIG["GEM_API_KEY"] #add gemini API key
 def get_gemini_feedback(pdf_path):
     if pdf_path:
         genai.configure(api_key=API_KEY)
