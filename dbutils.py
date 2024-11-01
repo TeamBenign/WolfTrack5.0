@@ -40,6 +40,8 @@ def create_tables(db):
             id	INTEGER NOT NULL,
             username	TEXT NOT NULL,
             fileName	TEXT NOT NULL,
+            position    TEXT,
+            likes       INTEGER,
             PRIMARY KEY(id AUTOINCREMENT),
             UNIQUE(username, fileName),
             FOREIGN KEY(username) REFERENCES client(username)
@@ -48,7 +50,16 @@ def create_tables(db):
     conn.commit()
     conn.close()
 
-
+def add_resume(value_set,db):
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+    print(value_set)
+    # Inserting rows into the 'resume' table
+    cursor.execute("INSERT INTO resumes (username, fileName, position, likes) VALUES (?, ?, ?, ?)",
+                       value_set)
+    conn.commit()
+    conn.close()
+    
 def add_client(value_set,db):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()

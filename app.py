@@ -26,7 +26,7 @@ from flask import send_file, current_app as app
 from Controller.gemini_pipeline import get_gemini_feedback
 from Controller.data import data, upcoming_events, profile
 from Controller.send_email import *
-from dbutils import add_job, create_tables, add_client, get_resumes_by_user_name, delete_job_application_by_job_id ,find_user, get_job_applications, get_job_applications_by_status, update_job_application_by_id, get_user_by_username_role
+from dbutils import add_job, create_tables, add_client, get_all_resumes, get_resumes_by_user_name, delete_job_application_by_job_id ,find_user, get_job_applications, get_job_applications_by_status, update_job_application_by_id, get_user_by_username_role
 from login_utils import login_user
 import requests
 import urllib.parse
@@ -147,10 +147,11 @@ def signup():
 
 @app.route('/admin',methods=['GET', 'POST'])
 def admin():
-    data_received = request.args.get('data')
-    user = find_user(str(data_received),database)
+    user_name = session['user_name']
+    user = find_user(user_name,database)
     ##Add query
-    return render_template('admin_landing.html', user=user)
+    resumes = get_all_resumes(database)
+    return render_template('admin_landing.html', user=user, resumes= resumes)
 
 
 @app.route('/student',methods=['GET', 'POST'])
