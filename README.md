@@ -7,12 +7,12 @@
 
 [![Manual Build](https://img.shields.io/github/actions/workflow/status/TeamBenign/WolfTrack5.0/main.yml)](https://github.com/TeamBenign/WolfTrack5.0/actions)
 <!-- [![codecov](https://codecov.io/gh/nehajaideep/WolfTrack3.0/branch/Group10StableBranch/graph/badge.svg?token=0Q36G2YQC6)](https://codecov.io/gh/nehajaideep/WolfTrack3.0) -->
-[![codecov](https://codecov.io/gh/aniketdarp190301/WolfTrack4.0/graph/badge.svg?token=3OWJ1DERO5)](https://app.codecov.io/github/rutuja-39/WolfTrack5.0/tree/dev/graph)
-![GitHub language count](https://img.shields.io/github/languages/count/rutuja-39/WolfTrack5.0)
-[![GitHub pull-requests](https://img.shields.io/github/issues-pr/rutuja-39/WolfTrack5.0)](https://github.com/rutuja-39/WolfTrack5.0/pulls)
-[![GitHub-size](https://img.shields.io/github/repo-size/rutuja-39/WolfTrack5.0)](https://github.com/rutuja-39/WolfTrack5.0)
-[![GitHub issues](https://img.shields.io/github/issues/rutuja-39/WolfTrack5.0)](https://github.com/rutuja-39/WolfTrack5.0/issues)
-[![GitHub-closed-issues](https://img.shields.io/github/issues-closed/rutuja-39/WolfTrack5.0)](https://github.com/rutuja-39/WolfTrack5.0/issues?q=is%3Aissue+is%3Aclosed)
+[![codecov](https://codecov.io/github/TeamBenign/WolfTrack5.0/graph/badge.svg?token=DI0W2ZSR9R)](https://codecov.io/github/TeamBenign/WolfTrack5.0)
+![GitHub language count](https://img.shields.io/github/languages/count/TeamBenign/WolfTrack5.0)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/TeamBenign/WolfTrack5.0)](https://github.com/rutuja-39/WolfTrack5.0/pulls)
+[![GitHub-size](https://img.shields.io/github/repo-size/TeamBenign/WolfTrack5.0)](https://github.com/TeamBenign/WolfTrack5.0)
+[![GitHub issues](https://img.shields.io/github/issues/TeamBenign/WolfTrack5.0)](https://github.com/TeamBenign/WolfTrack5.0/issues)
+[![GitHub-closed-issues](https://img.shields.io/github/issues-closed/TeamBenign/WolfTrack5.0)](https://github.com/TeamBenign/WolfTrack5.0/issues?q=is%3Aissue+is%3Aclosed)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- TABLE OF CONTENTS -->
