@@ -363,6 +363,7 @@ def resume_AI_analyzer():
         final_sugges = ""
 
         # Iterate through each character in the original string
+        
         for char in suggestions:
             # If the character is not a newline character, add it to the result string
             if char != '\n':
