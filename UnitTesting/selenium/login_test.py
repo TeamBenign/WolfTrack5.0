@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.firefox.service import Service as FirefoxService
 import time
 import HtmlTestRunner
 
@@ -11,14 +13,14 @@ class LoginTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Initialize the Firefox WebDriver
-        cls.driver = webdriver.Firefox()
+        cls.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
         cls.driver.maximize_window()
         cls.driver.implicitly_wait(10)
 
     def setUp(self):
         # Navigate to the login page before each test
         self.driver.get("http://127.0.0.1:5000/login")  # Replace with the actual login page URL
-
+    
     def test_login_with_valid_credentials_admin(self):
         """Test case for logging in with valid admin credentials."""
         driver = self.driver
@@ -32,11 +34,11 @@ class LoginTestCase(unittest.TestCase):
         password_field.send_keys("abcdefgh")  # Replace with a valid password in your database
 
         # Select User Role from dropdown
-        user_role_dropdown = Select(driver.find_element(By.NAME, "usertype"))
+        user_role_dropdown = Select(driver.find_element(By.NAME, "user_role"))
         user_role_dropdown.select_by_visible_text("Admin")
 
         # Submit the form
-        submit_button = driver.find_element(By.NAME, "submit")
+        submit_button = WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.TAG_NAME, "button"))).click()
         submit_button.click()
 
         # Wait for the page to load
@@ -67,7 +69,7 @@ class LoginTestCase(unittest.TestCase):
         user_role_dropdown.select_by_visible_text("Student")
 
         # Submit the form
-        submit_button = driver.find_element(By.NAME, "submit")
+        submit_button = driver.find_element("xpath","//input[@type='submit' and @value='Login']").click()
         submit_button.click()
 
         # Wait for the page to load
@@ -94,11 +96,11 @@ class LoginTestCase(unittest.TestCase):
         password_field.send_keys("WrongPassword!")
 
         # Select User Role from dropdown
-        user_role_dropdown = Select(driver.find_element(By.NAME, "usertype"))
+        user_role_dropdown = Select(driver.find_element(By.NAME, "user_role"))
         user_role_dropdown.select_by_visible_text("Admin")
 
         # Submit the form
-        submit_button = driver.find_element(By.NAME, "submit")
+        submit_button = driver.find_element("xpath","//input[@type='submit' and @value='Login']").click()
         submit_button.click()
 
         # Wait for the page to load
@@ -127,11 +129,11 @@ class LoginTestCase(unittest.TestCase):
         password_field.clear()
 
         # Select User Role from dropdown
-        user_role_dropdown = Select(driver.find_element(By.NAME, "usertype"))
+        user_role_dropdown = Select(driver.find_element(By.NAME, "user_role"))
         user_role_dropdown.select_by_visible_text("Admin")
 
         # Submit the form
-        submit_button = driver.find_element(By.NAME, "submit")
+        submit_button = driver.find_element("xpath","//input[@type='submit' and @value='Login']").click()
         submit_button.click()
 
         # Wait for the page to load
@@ -160,6 +162,7 @@ class LoginTestCase(unittest.TestCase):
 
 # Run the tests
 if __name__ == "__main__":
+    """
     output_file = "login_test_report.html"
     runner = HtmlTestRunner.HTMLTestRunner(
         output='.',  # Specify the output directory
@@ -168,3 +171,5 @@ if __name__ == "__main__":
         descriptions='Unit test results'  # Description for the report
     )
     runner.run(unittest.TestLoader().loadTestsFromTestCase(LoginTestCase))
+    """
+    #unittest.main()
