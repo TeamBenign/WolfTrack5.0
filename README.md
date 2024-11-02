@@ -1,4 +1,4 @@
-<h1><b>WolfTrack 5.0</b></h1>
+<h1><b>WolfTrack 6.0</b></h1>
 
 ---
 
