@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.firefox import GeckoDriverManager
 import time
 import uuid
 import HtmlTestRunner
@@ -12,7 +13,7 @@ class SignupTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Initialize the Firefox WebDriver
-        cls.driver = webdriver.Firefox()
+        cls.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
         cls.driver.maximize_window()
         cls.driver.implicitly_wait(10)
 
@@ -176,5 +177,5 @@ if __name__ == "__main__":
         report_title='Signup Test Report',  # Title for the report
         descriptions='Unit test results'  # Description for the report
     )
-    runner.run(unittest.TestLoader().loadTestsFromTestCase(SignupTestCase))
+    #runner.run(unittest.TestLoader().loadTestsFromTestCase(SignupTestCase))
     #unittest.main()
